@@ -1,0 +1,19 @@
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navbar h1{
+    font-size: 25px;
+}
+
+.navbar ul {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar ul li{
+    list-style: none;
+}
