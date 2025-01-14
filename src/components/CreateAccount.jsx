@@ -7,6 +7,22 @@ function CreateAccount(){
         const password = document.getElementById('password').value
         console.log(name,email,password)
 
+        fetch('http://localhost:4000/' , {
+            body: JSON.stringify({name , email , password}) ,
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
+            }
+        })
+        .then((data)=>{
+            return data.json()
+        })
+        .then((data)=>{
+            console.log(data)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
         
     }
     return (
