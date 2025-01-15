@@ -2,6 +2,9 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-bottom: 20px;
+    background-color: rgb(145, 178, 244);
+    box-shadow: 2px 1px 4px;
 }
 
 .navbar h1{
@@ -16,4 +19,15 @@
 
 .navbar ul li{
     list-style: none;
+    background-color: rgb(231, 225, 225);
+    padding: 7px;
+    font-size: 14px;
+    border-radius: 5px;
+    box-shadow: 2px 1px 4px;
+}
+
+.navbar ul li:hover{
+    box-shadow: 2px 1px 8px;
+    cursor: pointer;
+    background-color: #fff;
 }

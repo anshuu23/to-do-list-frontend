@@ -1,6 +1,10 @@
-import React from "react"
-
+import React , {useState , useEffect} from "react"
+import Head from "./Header"
+import "../css/createAccount.css"
 function CreateAccount(){
+
+    const [value , changeValue]  =useState(true)
+
     function createAccountButtonClicked(){
         const name = document.getElementById('name').value
         const email = document.getElementById('email').value
@@ -15,6 +19,9 @@ function CreateAccount(){
             }
         })
         .then((data)=>{
+            if(data.status == 200){
+                changeValue(false)
+            }
             return data.json()
         })
         .then((data)=>{
@@ -25,25 +32,32 @@ function CreateAccount(){
         })
         
     }
-    return (
-        <div>
 
-            <h2>Create Account</h2>
+   
+        return (
+            <div>
+                <Head />    
+                <main>
+                    <div className="wrapper">
+                        <h2>Create Account</h2>
+                        <label htmlFor="name">Name:</label>
+                        <input type="text" id="name" name="name"/>
+    
+                        <label htmlFor="email">E-mail:</label>
+                        <input type="email" id="email" name="email"/>
+    
+                        <label htmlFor="password">Set Password:</label>
+                        <input type="password" id="password" name="password"/>
+    
+                        <button type="submit" onClick={createAccountButtonClicked}>Submit</button>
+                        </div>
+                </main>
+            </div>
+    
+        )
+    }
+    
 
-            <label htmlFor="name">Name:</label>
-            <input type="text" id="name" name="name"/>
-
-            <label htmlFor="email">E-mail:</label>
-            <input type="email" id="email" name="email"/>
-
-            <label htmlFor="password">Set Password:</label>
-            <input type="password" id="password" name="password"/>
-
-            <button type="submit" onClick={createAccountButtonClicked}>Submit</button>
-        </div>
-
-    )
-}
 
 export default CreateAccount
 
