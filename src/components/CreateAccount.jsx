@@ -1,63 +1,91 @@
-import React , {useState , useEffect} from "react"
-import Head from "./Header"
-import "../css/createAccount.css"
-function CreateAccount(){
+import React, { useState } from "react";
+import Head from "./Header";
+import "../css/createAccount.css";
 
-    const [value , changeValue]  =useState(true)
+import { useContext } from "react";
+import { tokenContext } from "../ContextApi/constext";
+import { useNavigate } from "react-router-dom";
 
-    function createAccountButtonClicked(){
-        const name = document.getElementById('name').value
-        const email = document.getElementById('email').value
-        const password = document.getElementById('password').value
-        console.log(name,email,password)
+function CreateAccount() {
 
-        fetch('http://localhost:4000/' , {
-            body: JSON.stringify({name , email , password}) ,
-            method : 'POST',
-            headers : {
-                'Content-Type' : 'application/json',
+    const tokenData = useContext(tokenContext)
+    const navigate= useNavigate()
+        
+    
+    const [user , setUser] = useState({
+        userName : '',
+        email : '',
+        password : '',
+    })
+
+    const handelUserInput = (e) =>{
+        const {name , value} = e.target;
+        setUser((prev) => ({
+            ...prev , [name]:value
+        }))
+    }
+
+    const btnClicked = (e) =>{
+        e.preventDefault();
+        // console.log(user.userName )
+        fetch('https://to-do-list-backend-ykse.onrender.com/createAccount' , {
+            method:'POST',
+            body:JSON.stringify({
+                name:user.userName, 
+                email:user.email,
+                password:user.password
+            }),
+            headers:{
+                "Content-Type" : "application/json"
             }
         })
         .then((data)=>{
-            if(data.status == 200){
-                changeValue(false)
-            }
             return data.json()
         })
         .then((data)=>{
-            console.log(data)
+            console.log('data send from server= ',data)
+            console.log('extracted token =' , data.token)
+            // console.log('context api' , tokenData)
+            // tokenData.setToken(data.token)
+            localStorage.setItem("accessToken",data.token)
+            navigate('/')
+
         })
         .catch((err)=>{
             console.log(err)
+        }).finally(()=>{
+            console.log('token inside context api = ' , tokenData.token)
+
         })
-        
+
+       
+
     }
+    return (
+        <div>
+            <Head />
+            <main>
+                <div className="wrapper">
+                    <h2>Create Account</h2>
+                    
+                    <form action="">
 
-   
-        return (
-            <div>
-                <Head />    
-                <main>
-                    <div className="wrapper">
-                        <h2>Create Account</h2>
-                        <label htmlFor="name">Name:</label>
-                        <input type="text" id="name" name="name"/>
-    
-                        <label htmlFor="email">E-mail:</label>
-                        <input type="email" id="email" name="email"/>
-    
-                        <label htmlFor="password">Set Password:</label>
-                        <input type="password" id="password" name="password"/>
-    
-                        <button type="submit" onClick={createAccountButtonClicked}>Submit</button>
-                        </div>
-                </main>
-            </div>
-    
-        )
-    }
-    
+                        <label htmlFor="name">Name</label>
+                        <input type="text" name="userName" value={user.userName} onChange={handelUserInput} />
 
+                        <label htmlFor="email">Email</label>
+                        <input type="text" name="email" value={user.email} onChange={handelUserInput} />
 
-export default CreateAccount
+                        <label htmlFor="password">Password</label>
+                        <input type="text" name="password" value={user.password} onChange={handelUserInput} />
+                {JSON.stringify(tokenData.token)}
 
+                        <button onClick={btnClicked}>Create Account</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    );
+}
+
+export default CreateAccount;
